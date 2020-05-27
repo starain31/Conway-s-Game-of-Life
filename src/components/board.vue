@@ -1,10 +1,5 @@
 <template>
     <div>
-        <div>
-            <button v-on:click="next_board()">NEXT BOARD</button>
-            <button v-on:click="start()">START</button>
-            <button v-on:click="pause()">PAUSE</button>
-        </div>
         <div class="grid">
             <div class="row" v-for="(row, row_index) in grid" v-bind:key="row_index">
                 <div v-for="(cell, column_index) in row" v-bind:key="column_index"
@@ -20,28 +15,18 @@
 </template>
 
 <script>
-
     export default {
         name: "grid",
 
         data() {
             return {
                 game_interval: undefined,
-
-                grid: Array.from(
-                    {length: 50},
-                    function () {
-                        return Array.from(
-                            {length: 50},
-                            function () {
-                                return {
-                                    live: false
-                                }
-                            }
-                        )
-                    }
-                )
+                grid: undefined
             }
+        },
+
+        created() {
+            this.reset();
         },
 
         methods: {
@@ -55,6 +40,21 @@
                 clearInterval(this.game_interval);
             },
 
+            reset() {
+                this.grid = Array.from(
+                    {length: 50},
+                    function () {
+                        return Array.from(
+                            {length: 50},
+                            function () {
+                                return {
+                                    live: false
+                                }
+                            }
+                        )
+                    }
+                )
+            },
 
             toggle_cell(row_index, column_index) {
                 this.grid[row_index][column_index].live = !this.grid[row_index][column_index].live;
@@ -123,6 +123,7 @@
         display: grid;
         grid-template: repeat(50, 15px) / repeat(1, 1fr);
         gap: 3px;
+        border: solid;
     }
 
     .row {
